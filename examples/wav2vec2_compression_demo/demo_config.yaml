@@ -1,0 +1,121 @@
+# configs for demo.py
+
+
+data_loader:
+
+     # train the student model on part of the dev-clean dataset. Good for quickly testing ideas
+     train_on_dev_clean: True
+
+     # Path to the training dataset
+     train_data_path: '/home/datasets/'
+
+     # Path to the validation dataset
+     val_data_path: '/home/datasets/'
+
+     # Number of training samples per batch on 1 gpu
+     train_batch_size: 1
+
+     # Number of validation samples per batch on 1 gpu
+     val_batch_size: 1
+
+     # Set to True if using train-clean-100 from LibriSpeech to train
+     use_train_clean_100: True
+
+     # Set to True if using train-clean-360 from LibriSpeech to train
+     use_train_clean_360: False
+
+     # Set to True if using train-other-500 from LibriSpeech to train
+     use_train_other_500: False
+
+     # Number of workers for training and validation data loaders
+     num_workers: 4
+
+
+knowledge_distillation:
+   general:
+
+        # Number of GPU used during training
+        num_gpu_used: 1
+
+        # Path to fairseq pretrained wav2vec 2.0 model. This model is used to initialize the teacher model as well as argument set up of the student model
+        fairseq_pretrained_model_path: "/home/models/wav2vec2/wav2vec_big_960h.pt"
+
+        # Temperature for knowledge distillation
+        temperature: 1
+
+   optimization:
+
+        # Number of epochs during knowledge distillation training
+        max_epoch: 5
+
+        # Optimizer to use during knowledge distillation training. choices=["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]
+        optimize_method: "adam"
+
+        # Learning rate scheduler during knowledge distillation training. choices=["", "linear_decay_with_warm_up", "cosine_anneal"]. No scheduling if setting to ""
+        scheduler_method: ""
+
+        # Learning rate for the optimizer
+        learning_rate: 0.00002
+
+        # Number of epochs to warm up the learning rate. Only useful is scheduler is set to linear_decay_with_warm_up
+        num_lr_warm_up_epoch: 0
+
+   final_loss_coeff:
+
+        # Coefficient that is used to multiply with the student loss when calculating the final loss used to train the student model
+        student_loss: 0
+
+        # Coefficient that is used to multiply with the knowledge distillation loss when calculating the final loss used to train the student model
+        kd_loss: 1
+
+        # Coefficient that is used to multiply with the cosine embedding loss when calculating the final loss used to train the student model
+        cos_embed_loss: 0
+
+        # Coefficient that is used to multiply with the feature penalty when calculating the final loss used to train the student model
+        features_pen: 1
+
+   student_model:
+
+        # Number of transformer layer in the student model
+        num_trans_layer_student_model: 4
+
+        # Number of transformer layer in the model that is used to initialize the student model
+        num_trans_layer_student_init_model: 12
+
+        # Path to the model check point that is used to initialize the student model
+        student_init_model_path: "/home/models/wav2vec2/student-epoch=009-student_wer_dev_clean=0.06143.ckpt"
+
+        # Type of the model that is used to initialize the student model. choices=["fairseq_pretrained", "previous_kd_ckpt"]
+        # If set to "previous_kd_ckpt", student_init_model is loaded from student_init_model_path. If set to "fairseq_pretrained", student_init_model is loaded from fairseq_pretrained_model_path
+        student_init_model_type: "previous_kd_ckpt"
+
+        # Method used to initialize every transformer layer of the student model. Could use weights from first k (or last k, or every k) layer of student-init-model. choices=["first_k", "last_k", "every_k"]
+        student_trans_layer_init_method: "every_k"
+          
+   pytorch_lightning_trainer:
+
+        # The norm to use when calculating the gradient for tracking
+        track_grad_norm: 2
+
+        # Number of gradient accumulation steps
+        accumulate_grad_batches: 1
+
+        # Number of compute nodes
+        num_nodes: 1
+
+        # 16 bit or 32 bit training. See https://pytorch-lightning.readthedocs.io/en/latest/amp.html for details
+        precision: 16
+
+        # Path to a previous check point where the current experiment should resume from
+        resume_from_checkpoint: ""
+
+   comet_info:
+
+        # Set to True if logging experiment results to comet.ml. If debugging, set this to False
+        log_to_comet: False
+
+        # Path to a txt file which contains api key, project name and work sapce at Comet
+        comet_info_path: ""
+
+        # Experiment name on comet
+        comet_exp_name: ""
