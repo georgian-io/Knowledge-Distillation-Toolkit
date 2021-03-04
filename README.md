@@ -17,7 +17,7 @@ The constructor of `KnowledgeDistillationTraining` class takes in following argu
 
 `val_data_loaders` (`dict`): A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`.
 
-`inference_pipeline` (`object`): A python class that pass data samples from a validation data loader into a model for inference. It should return an inference score. See below for more information on this class.
+`inference_pipeline` (`object`): A python class that pass data samples from a validation data loader into a model for inference. It should return an inference score. See [below](#Knowledge-Distillation-Toolkit) for more information on this class.
 
 `num_gpu_used` (`int`): Number of GPUs used for training.
 
