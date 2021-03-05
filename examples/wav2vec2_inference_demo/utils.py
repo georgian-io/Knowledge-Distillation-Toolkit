@@ -62,6 +62,10 @@ class Wav2VecCtc(BaseFairseqModel):
         x = self.w2v_encoder(**kwargs)
         return x
 
+    def prepare_for_inference_after_quantization(self):
+        self.w2v_encoder.prepare_for_inference_after_quantization()
+        return
+
 class W2lDecoder(object):
     def __init__(self, tgt_dict):
         self.tgt_dict = tgt_dict
