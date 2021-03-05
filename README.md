@@ -39,7 +39,7 @@ Argument Name | Type | Explanation
 `logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. Default: None
 
 # Demo
-We have provided two demos that uses this toolkit and compresses machine learning models.
+We have provided two demos which use this toolkit and compress machine learning models.
 
 Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
 
