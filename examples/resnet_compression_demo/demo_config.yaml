@@ -1,0 +1,63 @@
+# configs for resnet_compression_demo.py
+
+knowledge_distillation:
+   general:
+
+        # Number of GPU used during training
+        num_gpu_used: 1
+
+        # Temperature for knowledge distillation
+        temperature: 1
+
+   optimization:
+
+        # Number of epochs during knowledge distillation training
+        max_epoch: 5
+
+        # Optimizer to use during knowledge distillation training. choices=["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]
+        optimize_method: "adam"
+
+        # Learning rate scheduler during knowledge distillation training. choices=["", "linear_decay_with_warm_up", "cosine_anneal"]. No scheduling if setting to ""
+        scheduler_method: ""
+
+        # Learning rate for the optimizer
+        learning_rate: 0.000001
+
+        # Number of epochs to warm up the learning rate. Only useful is scheduler is set to linear_decay_with_warm_up
+        num_lr_warm_up_epoch: 0
+
+   final_loss_coeff:
+
+        # Coefficient that is used to multiply with the knowledge distillation loss when calculating the final loss used to train the student model
+        kd_loss: 1
+
+        # Coefficient that is used to multiply with the cosine embedding loss when calculating the final loss used to train the student model
+        cos_embed_loss: 0
+          
+   pytorch_lightning_trainer:
+
+        # The norm to use when calculating the gradient for tracking
+        track_grad_norm: 2
+
+        # Number of gradient accumulation steps
+        accumulate_grad_batches: 1
+
+        # Number of compute nodes
+        num_nodes: 1
+
+        # 16 bit or 32 bit training. See https://pytorch-lightning.readthedocs.io/en/latest/amp.html for details
+        precision: 16
+
+        # Path to a previous check point where the current experiment should resume from
+        resume_from_checkpoint: ""
+
+   comet_info:
+
+        # Set to True if logging experiment results to comet.ml. If debugging, set this to False
+        log_to_comet: False
+
+        # Path to a txt file which contains api key, project name and work sapce at Comet
+        comet_info_path: "/home/comet_api.txt"
+
+        # Experiment name on comet
+        comet_exp_name: ""
