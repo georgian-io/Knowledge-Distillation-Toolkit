@@ -10,33 +10,33 @@ To start knowledge distillation training, you need to first instantiate the [Kno
 
 In the table below, we show arguments that the constructor of `KnowledgeDistillationTraining` class takes in.
 
-Argument Name | Type | Explanation
---- | --- | ---
-`teacher_model` | `torch.nn.Module` | A teacher model.
-`student_model` |`torch.nn.Module` | A student model.
-`train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set.
-`val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`.
-`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work?) for more information on this class.
-`num_gpu_used` | `int` | Number of GPUs used for training.
-`max_epoch` | `int` | Number of training epochs.
-`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"].
-`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "".
-`learning_rate` | `float` | Learning rate for knowledge distillation traininig. 
-`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. 
-`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See below for more information.
-`log_to_comet` | `bool` | Set to True if logging experiment results to comet.ml. If debugging, set this to False.
-`comet_info_path` | `str` | Path to a txt file which contains api key, project name and work space at comet.ml.
-`comet_exp_name` | `str` | Experiment name on comet.ml.
-`temperature` | `int` | Temperature for calculating the knowledge distillation loss. Default: 1
-`seed` | `int` | Seed value for the experiment. Default: 32
-`track_grad_norm` | `int` | The norm to use when calculating the gradient for tracking. Default: 2
-`accumulate_grad_batches` | `int` | Number of gradient accumulation steps. Default: 1
-`accelerator` | `str`/`None` | Accelerators for PyTorch Lightning. See [here](https://pytorch-lightning.readthedocs.io/en/1.1.1/accelerators.html) for details. Default: `None`.
-`num_nodes` | `int` | Number of compute nodes. Default: 1
-`precision` | `int` | 16 bit or 32 bit training. See [here](https://pytorch-lightning.readthedocs.io/en/latest/amp.html) for details. Default 16
-`deterministic` | `bool` | `deterministic` flag in PyTorch lightning. Default: True
-`resume_from_checkpoint` | `str` | Path to a previous check point where the current experiment should resume from. Default: ""
-`logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. Default: None
+Argument Name | Type | Explanation | Default
+--- | --- | --- | ---
+`teacher_model` | `torch.nn.Module` | A teacher model. | `None`
+`student_model` |`torch.nn.Module` | A student model. |`None`
+`train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set. | `None`
+`val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`. | `None`
+`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work?) for more information on this class. | `None`
+`num_gpu_used` | `int` | Number of GPUs used for training. | Required parameter. No default value
+`max_epoch` | `int` | Number of training epochs. | Required parameter. No default value
+`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]. | Required parameter. No default value
+`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "". | Required parameter. No default value
+`learning_rate` | `float` | Learning rate for knowledge distillation traininig. | Required parameter. No default value
+`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. | Required parameter. No default value
+`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See below for more information. | Required parameter. No default value
+`log_to_comet` | `bool` | Set to True if logging experiment results to comet.ml. If debugging, set this to False. | `False`
+`comet_info_path` | `str` | Path to a txt file which contains api key, project name and work space at comet.ml. | `""`
+`comet_exp_name` | `str` | Experiment name on comet.ml. | `""`
+`temperature` | `int` | Temperature for calculating the knowledge distillation loss. | `1`
+`seed` | `int` | Seed value for the experiment. | `32`
+`track_grad_norm` | `int` | The norm to use when calculating the gradient for tracking. | `2`
+`accumulate_grad_batches` | `int` | Number of gradient accumulation steps. | `1`
+`accelerator` | `str`/`None` | Accelerators for PyTorch Lightning. See [here](https://pytorch-lightning.readthedocs.io/en/1.1.1/accelerators.html) for details. | `None`
+`num_nodes` | `int` | Number of compute nodes. | `1`
+`precision` | `int` | 16 bit or 32 bit training. See [here](https://pytorch-lightning.readthedocs.io/en/latest/amp.html) for details. | `16`
+`deterministic` | `bool` | `deterministic` flag in PyTorch lightning. | `True`
+`resume_from_checkpoint` | `str` | Path to a previous check point where the current experiment should resume from. | `""`
+`logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. | `None`
 
 # Demo
 We have provided two demos which use this toolkit and compress machine learning models.
