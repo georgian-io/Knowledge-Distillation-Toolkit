@@ -16,7 +16,7 @@ Argument Name | Type | Explanation | Default
 `student_model` |`torch.nn.Module` | A student model. |`None`
 `train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set. | `None`
 `val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`. | `None`
-`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work?) for more information on this class. | `None`
+`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work) for more information on this class. | `None`
 `num_gpu_used` | `int` | Number of GPUs used for training. | Required parameter. No default value
 `max_epoch` | `int` | Number of training epochs. | Required parameter. No default value
 `optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]. | Required parameter. No default value
@@ -74,4 +74,8 @@ The code above is just an example and you can create inference pipeline in whate
 1. The `inference_pipeline` class only needs to implement `run_inference_pipeline`. `run_inference_pipeline` tests a student model on a validation dataset.
 
 2. `run_inference_pipeline` should return a dictionary, e.g. {"inference_result": a numerical value that measures the performance of a student model on a validation dataset.}
+
+# How does loss function work?
+
+We need to calculate a loss function when we do knowledge distillation training. We always have a knowledge distillation loss, which is the KL divergence between teacher and student model's probability distribution. It is also common to add a supervised training loss into the loss function. For example, if the student model is an image classification network, the supervised training loss could be [cross entropy loss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html). The final loss function would combine different losses, so we can calculate the gradient using the final loss and update the student model (Obviously, we will not do this manually and PyTorch will do this automatically for us). 
 
