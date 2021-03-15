@@ -10,33 +10,33 @@ To start knowledge distillation training, you need to first instantiate the [Kno
 
 In the table below, we show arguments that the constructor of `KnowledgeDistillationTraining` class takes in.
 
-Argument Name | Type | Explanation
---- | --- | ---
-`teacher_model` | `torch.nn.Module` | A teacher model.
-`student_model` |`torch.nn.Module` | A student model.
-`train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set.
-`val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`.
-`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work?) for more information on this class.
-`num_gpu_used` | `int` | Number of GPUs used for training.
-`max_epoch` | `int` | Number of training epochs.
-`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"].
-`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "".
-`learning_rate` | `float` | Learning rate for knowledge distillation traininig. 
-`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. 
-`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See below for more information.
-`log_to_comet` | `bool` | Set to True if logging experiment results to comet.ml. If debugging, set this to False.
-`comet_info_path` | `str` | Path to a txt file which contains api key, project name and work space at comet.ml.
-`comet_exp_name` | `str` | Experiment name on comet.ml.
-`temperature` | `int` | Temperature for calculating the knowledge distillation loss. Default: 1
-`seed` | `int` | Seed value for the experiment. Default: 32
-`track_grad_norm` | `int` | The norm to use when calculating the gradient for tracking. Default: 2
-`accumulate_grad_batches` | `int` | Number of gradient accumulation steps. Default: 1
-`accelerator` | `str`/`None` | Accelerators for PyTorch Lightning. See [here](https://pytorch-lightning.readthedocs.io/en/1.1.1/accelerators.html) for details. Default: `None`.
-`num_nodes` | `int` | Number of compute nodes. Default: 1
-`precision` | `int` | 16 bit or 32 bit training. See [here](https://pytorch-lightning.readthedocs.io/en/latest/amp.html) for details. Default 16
-`deterministic` | `bool` | `deterministic` flag in PyTorch lightning. Default: True
-`resume_from_checkpoint` | `str` | Path to a previous check point where the current experiment should resume from. Default: ""
-`logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. Default: None
+Argument Name | Type | Explanation | Default
+--- | --- | --- | ---
+`teacher_model` | `torch.nn.Module` | A teacher model. | `None`
+`student_model` |`torch.nn.Module` | A student model. |`None`
+`train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set. | `None`
+`val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`. | `None`
+`inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work) for more information on this class. | `None`
+`num_gpu_used` | `int` | Number of GPUs used for training. | Required parameter. No default value
+`max_epoch` | `int` | Number of training epochs. | Required parameter. No default value
+`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]. | Required parameter. No default value
+`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "". | Required parameter. No default value
+`learning_rate` | `float` | Learning rate for knowledge distillation traininig. | Required parameter. No default value
+`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. | Required parameter. No default value
+`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See below for more information. | Required parameter. No default value
+`log_to_comet` | `bool` | Set to True if logging experiment results to comet.ml. If debugging, set this to False. | `False`
+`comet_info_path` | `str` | Path to a txt file which contains api key, project name and work space at comet.ml. | `""`
+`comet_exp_name` | `str` | Experiment name on comet.ml. | `""`
+`temperature` | `int` | Temperature for calculating the knowledge distillation loss. | `1`
+`seed` | `int` | Seed value for the experiment. | `32`
+`track_grad_norm` | `int` | The norm to use when calculating the gradient for tracking. | `2`
+`accumulate_grad_batches` | `int` | Number of gradient accumulation steps. | `1`
+`accelerator` | `str`/`None` | Accelerators for PyTorch Lightning. See [here](https://pytorch-lightning.readthedocs.io/en/1.1.1/accelerators.html) for details. | `None`
+`num_nodes` | `int` | Number of compute nodes. | `1`
+`precision` | `int` | 16 bit or 32 bit training. See [here](https://pytorch-lightning.readthedocs.io/en/latest/amp.html) for details. | `16`
+`deterministic` | `bool` | `deterministic` flag in PyTorch lightning. | `True`
+`resume_from_checkpoint` | `str` | Path to a previous check point where the current experiment should resume from. | `""`
+`logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. | `None`
 
 # Demo
 We have provided two demos which use this toolkit and compress machine learning models.
@@ -75,3 +75,10 @@ The code above is just an example and you can create inference pipeline in whate
 
 2. `run_inference_pipeline` should return a dictionary, e.g. {"inference_result": a numerical value that measures the performance of a student model on a validation dataset.}
 
+# How does loss function work?
+
+We need to calculate a loss function when we do knowledge distillation training. We always have a knowledge distillation loss, which is the KL divergence between teacher and student model's probability distribution. It is also common to add a supervised training loss into the loss function. For example, if the student model is an image classification network, the supervised training loss could be [cross entropy loss](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html). The final loss function would combine different losses, so we can calculate the gradient using the final loss and update the student model (Obviously, we will not do this manually and PyTorch will do this automatically for us). 
+
+How does this toolkit combine different losses (e.g. knowledge distillation loss, supervised training loss, etc.) and form the final loss? We ask the user to provide `final_loss_coeff_dict`. `final_loss_coeff_dict` should be a dictionary which contains name of a loss function and its coefficient. For example, we could have `final_loss_coeff_dict = {"kd_loss": 0.5, "student_loss":0.2}`, then the final loss would be calculated as `0.5 * kd_loss_value + 0.2 * student_loss_value`.
+
+In the example above, we know that the coefficient for knowledge distillation loss is 0.5, because its corresponding key is `kd_loss`. We use the same key to identify the actual loss value, so that we can multiply a loss value with its coefficient when calculating the final loss. In `kd_training.py`, we store all loss values in a dictionary, `final_loss_components`. Keys in `final_loss_components` must match with keys in `final_loss_coeff_dict`, so we know what to multiply when calculating the final loss. Since we alwyas have the knowledge distillation loss, `final_loss_coeff_dict` already contains `kd_loss` and you just need to specify the coefficient for knowledge distillation loss in `final_loss_coeff_dict`. It's possible to add losses from the student model in to the final loss, such as the supervised training loss. You need to form a dictionary at the end of you forward pass, where key is name of the loss and value is the actual loss value, then return it in student model's output.
