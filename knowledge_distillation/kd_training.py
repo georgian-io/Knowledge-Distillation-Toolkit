@@ -12,7 +12,7 @@ import numpy as np
 from tqdm import tqdm
 
 
-class KnowledgeDistillWav2vec2Model(pl.LightningModule):
+class KnowledgeDistillModel(pl.LightningModule):
     """
     Distill the knowledge from a teacher model to a student model.
 
@@ -243,20 +243,20 @@ class KnowledgeDistillationTraining():
                                #num_processes = 2
                         )
 
-        self.pytorch_lightning_module = KnowledgeDistillWav2vec2Model(num_gpu_used = num_gpu_used,
-                                                                      max_epoch = max_epoch,
-                                                                      temperature = temperature,
-                                                                      optimize_method = optimize_method,
-                                                                      scheduler_method = scheduler_method,
-                                                                      learning_rate = learning_rate,
-                                                                      num_lr_warm_up_epoch = num_lr_warm_up_epoch,
-                                                                      final_loss_coeff_dict = final_loss_coeff_dict,
-                                                                      train_data_loader = train_data_loader,
-                                                                      val_data_loaders = val_data_loaders,
-                                                                      inference_pipeline = inference_pipeline,
-                                                                      student_model = student_model,
-                                                                      teacher_model = teacher_model,
-                                                                      )
+        self.pytorch_lightning_module = KnowledgeDistillModel(num_gpu_used = num_gpu_used,
+                                                              max_epoch = max_epoch,
+                                                              temperature = temperature,
+                                                              optimize_method = optimize_method,
+                                                              scheduler_method = scheduler_method,
+                                                              learning_rate = learning_rate,
+                                                              num_lr_warm_up_epoch = num_lr_warm_up_epoch,
+                                                              final_loss_coeff_dict = final_loss_coeff_dict,
+                                                              train_data_loader = train_data_loader,
+                                                              val_data_loaders = val_data_loaders,
+                                                              inference_pipeline = inference_pipeline,
+                                                              student_model = student_model,
+                                                              teacher_model = teacher_model,
+                                                              )
 
     def start_kd_training(self):
         self.trainer.fit(self.pytorch_lightning_module)
