@@ -8,7 +8,7 @@ This toolkit allows you to compress a machine learning model using knowledge dis
 # Demo
 We have provided two demos which use this toolkit and compress machine learning models. In these demos, we show how to create student and teacher model, inference pipeline, training and validation data loaders, and pass them into the knowledge distillation toolkit.
 
-Compress resnet: [this colab notebook](https://colab.research.google.com/drive/1r14Dp0tCmmdfS06a0EEqZaMTofdhhy-U?usp=sharing)
+Compress resnet: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1r14Dp0tCmmdfS06a0EEqZaMTofdhhy-U?usp=sharing)
 
 Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
 
