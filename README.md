@@ -5,6 +5,13 @@ This toolkit allows you to compress a machine learning model using knowledge dis
 
 ![demo image](./demo_img.png)
 
+# Demo
+We have provided two demos which use this toolkit and compress machine learning models. In these demos, we show how to create student and teacher model, inference pipeline, training and validation data loaders, and pass them into the knowledge distillation toolkit.
+
+Compress resnet: [this colab notebook](https://colab.research.google.com/drive/1r14Dp0tCmmdfS06a0EEqZaMTofdhhy-U?usp=sharing)
+
+Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
+
 # Start knowledge distillation training!
 To start knowledge distillation training, you need to first instantiate the [KnowledgeDistillationTraining](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L178) class, then call the [start_kd_training](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L261) method.
 
@@ -38,12 +45,6 @@ Argument Name | Type | Explanation | Default
 `resume_from_checkpoint` | `str` | Path to a previous check point where the current experiment should resume from. | `""`
 `logging_param` | `dict` | A dictionary which contains parameters that should be saved to comet.ml. | `None`
 
-# Demo
-We have provided two demos which use this toolkit and compress machine learning models.
-
-Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
-
-Compress resnet: [this colab notebook](https://colab.research.google.com/drive/1r14Dp0tCmmdfS06a0EEqZaMTofdhhy-U?usp=sharing)
 
 # How does inference pipeline work?
 
