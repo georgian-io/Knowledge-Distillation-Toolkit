@@ -24,13 +24,13 @@ Argument Name | Type | Explanation | Default
 `train_data_loader` | `torch.utils.data.DataLoader` | Data loader for the training data set. | `None`
 `val_data_loaders` | `dict` | A dictionary which could contain multiple validation data loaders. The key should be the data loader's name and value is a data loader. Note that the data loader should be an instance of `torch.utils.data.DataLoader`. | `None`
 `inference_pipeline` | `object` | A python class that returns the validation result. See [below](#How-does-inference-pipeline-work) for more information on this class. | `None`
-`num_gpu_used` | `int` | Number of GPUs used for training. | Required parameter. No default value
-`max_epoch` | `int` | Number of training epochs. | Required parameter. No default value
-`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]. | Required parameter. No default value
-`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "". | Required parameter. No default value
-`learning_rate` | `float` | Learning rate for knowledge distillation traininig. | Required parameter. No default value
-`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. | Required parameter. No default value
-`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See below for more information. | Required parameter. No default value
+`num_gpu_used` | `int` | Number of GPUs used for training. | 0
+`max_epoch` | `int` | Number of training epochs. | 10
+`optimize_method` | `str` | Optimization method used to train the student model. Could be one of ["adam", "sgd", "adam_wav2vec2.0", "adam_distilBert", "adamW_distilBert"]. | `"adam"`
+`scheduler_method` | `str` | Learning rate scheduler. Could be one of ["", "linear_decay_with_warm_up", "cosine_anneal"]. No learning rate scheduling if setting to "". | `""`
+`learning_rate` | `float` | Learning rate for knowledge distillation traininig. | 0.0001
+`num_lr_warm_up_epoch` | `int` | Number of epochs to warm up (increase) the learning rate. Set to 0 if not warming up the learning rate. | 0
+`final_loss_coeff_dict` | `dict` | A dictionary which contains coefficients that should be multiplied with the loss. See [below](#How-does-loss-function-work) for more information. | `{"kd_loss":1}`
 `log_to_comet` | `bool` | Set to True if logging experiment results to comet.ml. If debugging, set this to False. | `False`
 `comet_info_path` | `str` | Path to a txt file which contains api key, project name and work space at comet.ml. | `""`
 `comet_exp_name` | `str` | Experiment name on comet.ml. | `""`
