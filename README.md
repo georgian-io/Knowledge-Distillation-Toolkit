@@ -12,6 +12,57 @@ Compress resnet: [![Open In Colab](https://colab.research.google.com/assets/cola
 
 Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
 
+# Usage
+
+## Define inference pipeline
+```
+class InferencePipeline:
+    def __init__(self):
+        # Set up if necessary
+        
+    def run_inference_pipeline(self, model, data_loader):
+        # Get the accuracy of the model on a validation dataset
+        return {"inference_result": accuracy}
+```
+See [here](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/resnet_compression_demo/inference_pipeline.py) for a concrete example.
+
+## Define student model
+```
+import torch.nn as nn
+
+class StudentModel(nn.Module):
+    def forward(self, ):
+        # Forward pass of the student model
+```
+See [here](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/resnet_compression_demo/resnet_compression_demo.py) for a concrete example.
+
+## Define teacher model
+```
+import torch.nn as nn
+
+class TeacherModel(nn.Module):
+    def forward(self, ):
+        # Forward pass of the teacher model
+```
+See [here](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/resnet_compression_demo/resnet_compression_demo.py) for a concrete example.
+
+## Put everything together and start knowledge distillation
+```
+import torch
+inference_pipeline = InferencePipeline()
+student_model = StudentModel()
+teacher_model = TeacherModel()
+train_data_loader = torch.utils.data.DataLoader(train_dataset)
+val_data_loaders = {"a validation dataset": torch.utils.data.DataLoader(val_dataset)}
+
+KD_example = KnowledgeDistillationTraining(train_data_loader = train_data_loader,
+                                           val_data_loaders = val_data_loaders,
+                                           inference_pipeline = inference_pipeline,
+                                           student_model = student_model,
+                                           teacher_model = teacher_model)
+KD_example.start_kd_training()                                
+```
+
 # Start knowledge distillation training!
 To start knowledge distillation training, you need to first instantiate the [KnowledgeDistillationTraining](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L178) class, then call the [start_kd_training](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L261) method.
 
