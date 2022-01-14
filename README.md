@@ -1,18 +1,26 @@
 # Knowledge Distillation Toolkit
+[Demo](#demo)
+
+[Usage](#usage)
+
+[Knowledge Distillation Training](#kd_train)
+
+[Code for "Shrinking Bigfoot: Reducing wav2vec 2.0 footprint"](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/tree/main/examples/wav2vec2_compression_demo)
+
 
 This toolkit allows you to compress a machine learning model using knowledge distillation. To use this toolkit, you need to provide a teacher model, a student model, data loaders for training and validation, and an inference pipeline. This toolkit is based on [PyTorch](https://pytorch.org/) and [PyTorch Lightning
 ](https://github.com/PyTorchLightning/pytorch-lightning), so teacher and student models need to be [PyTorch neural network modules](https://pytorch.org/docs/stable/generated/torch.nn.Module.html), and data loaders need to be [PyTorch data loaders](https://pytorch.org/docs/stable/data.html).
 
 ![demo image](./demo_img.png)
 
-# Demo
+# <a name="demo"></a> Demo
 We have provided two demos which use this toolkit and compress machine learning models. In these demos, we show how to create student and teacher model, inference pipeline, training and validation data loaders, and pass them into the knowledge distillation toolkit.
 
 Compress resnet: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1r14Dp0tCmmdfS06a0EEqZaMTofdhhy-U?usp=sharing)
 
 Compress wav2vec 2.0: [this notebook](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/main/examples/wav2vec2_compression_demo/wav2vec2_compression_demo.ipynb)
 
-# Usage
+# <a name="usage"></a>Usage
 
 ## Define inference pipeline
 ```
@@ -63,7 +71,7 @@ KD_example = KnowledgeDistillationTraining(train_data_loader = train_data_loader
 KD_example.start_kd_training()                                
 ```
 
-# Start knowledge distillation training!
+# <a name="kd_train"></a> Start knowledge distillation training!
 To start knowledge distillation training, you need to first instantiate the [KnowledgeDistillationTraining](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L178) class, then call the [start_kd_training](https://github.com/georgian-io/Knowledge-Distillation-Toolkit/blob/f39eed6dd66f924058c9ee4b16453014efb07b75/knowledge_distillation/kd_training.py#L261) method.
 
 In the table below, we show arguments that the constructor of `KnowledgeDistillationTraining` class takes in.
