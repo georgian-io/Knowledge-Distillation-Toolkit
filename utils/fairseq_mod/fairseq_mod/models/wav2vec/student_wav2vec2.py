@@ -795,7 +795,7 @@ class StudentWav2Vec2Model(BaseFairseqModel):
             if student_init_model_type == "fairseq_pretrained":
                 name_as_list = name_as_list[2:] # get rid of "w2v_encoder.w2v_model" in the layer's name
             elif student_init_model_type == "previous_kd_ckpt":
-                if name_as_list[0] == 'teacher_model': continue
+                if name_as_list[0] != 'student_model': continue
                 name_as_list = name_as_list[1:] # get rid of "student_model" in the layer's name
 
             # Skip transformers and initialize later
@@ -817,7 +817,7 @@ class StudentWav2Vec2Model(BaseFairseqModel):
                              ".self_attn.out_proj.weight", ".self_attn.out_proj.bias", ".self_attn_layer_norm.weight", ".self_attn_layer_norm.bias", ".fc1.weight", ".fc1.bias", ".fc2.weight",
                              ".fc2.bias", ".final_layer_norm.weight", ".final_layer_norm.bias"]
 
-        assert num_trans_layer_student_model < num_trans_layer_student_init_model
+        #assert num_trans_layer_student_model < num_trans_layer_student_init_model
         if student_trans_layer_init_method == "first_k":
             student_init_model_selected_transformer_layers = [i for i in range(num_trans_layer_student_model)]
         elif student_trans_layer_init_method == "last_k":

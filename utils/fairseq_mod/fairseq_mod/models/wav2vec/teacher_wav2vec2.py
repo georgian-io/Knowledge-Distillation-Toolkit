@@ -560,8 +560,9 @@ class TeacherWav2Vec2Model(BaseFairseqModel):
         x = self.encoder(x, padding_mask=padding_mask)
         logits = self.get_logits_after_proj(x)
         token_prob = self.get_normalized_probs(x, log_probs=False, temperature=temperature)
+        token_log_prob = self.get_normalized_probs(x, log_probs=True, temperature=temperature)
 
-        return {"x": x, "padding_mask": padding_mask, "logits": logits, "prob":token_prob}
+        return {"x": x, "padding_mask": padding_mask, "logits": logits, "prob":token_prob, "log_prob": token_log_prob}
 
     def quantize(self, x):
         assert self.quantizer is not None
