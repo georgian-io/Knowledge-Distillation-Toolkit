@@ -6,7 +6,7 @@ Code for "Shrinking Bigfoot: Reducing wav2vec 2.0 footprint" (https://arxiv.org/
 
 `wav2letter`
 
-`pytorch-lightning`
+`pytorch-lightning==1.0.8`
 
 `torch==1.6`
 
