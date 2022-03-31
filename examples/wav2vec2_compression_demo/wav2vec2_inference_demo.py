@@ -12,6 +12,8 @@ from knowledge_distillation.kd_training import KnowledgeDistillModel
 from fairseq_mod.models.wav2vec.student_wav2vec2 import StudentWav2Vec2Model
 from fairseq_mod.models.wav2vec.teacher_wav2vec2 import TeacherWav2Vec2Model
 
+from codecarbon import EmissionsTracker
+
 if __name__ == "__main__":
     MODEL_LOAD_PATH = "/home/Knowledge-Distillation-Toolkit/examples/wav2vec2_compression_demo/speech-processing/retrain_exp9/checkpoints/student-epoch=042-train_final_loss=0.08857.ckpt"
     config = yaml.load(open('demo_config.yaml','r'), Loader=yaml.FullLoader)
@@ -48,5 +50,8 @@ if __name__ == "__main__":
         teacher_model = teacher_model)
     KD_module.student_model.cuda()
     KD_module.student_model.eval()
+    tracker = EmissionsTracker()
+    tracker.start()
     print(inference_pipeline_example.run_inference_pipeline(KD_module.student_model, val_data_loaders['dev_clean']))
+    tracker.stop()
     exit()
