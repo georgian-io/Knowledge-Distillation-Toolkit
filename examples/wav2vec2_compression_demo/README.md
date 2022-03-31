@@ -14,6 +14,8 @@ Code for "Shrinking Bigfoot: Reducing wav2vec 2.0 footprint" (https://arxiv.org/
 
 Install `fairseq_mod` (our modified version of `fairseq`), first cd into `Knowledge-Distillation-Toolkit/utils/fairseq_mod`, then run `pip install --editable ./`
 
+[optional] `pip install codecarbon`
+
 ## Checkpoints
 12 transformer layer student wav2vec 2.0 model - https://drive.google.com/file/d/13HdB6W_Ik2JOElqz2bjRPo9Vy4C10vCq/view?usp=sharing
 
