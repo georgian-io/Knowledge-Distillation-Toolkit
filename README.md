@@ -1,4 +1,4 @@
-# Knowledge Distillation Toolkit
+# :no_entry: DEPRECATED Knowledge Distillation Toolkit
 [Demo](#demo)
 
 [Usage](#usage)
